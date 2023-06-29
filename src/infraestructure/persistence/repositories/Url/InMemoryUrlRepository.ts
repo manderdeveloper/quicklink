@@ -1,6 +1,6 @@
 import { id, injectable } from 'inversify';
-import { UrlRepository } from '../../../domain/repositories/UrlRepository';
-import { Url } from '../../../domain/models/Url';
+import { UrlRepository } from '../../../../domain/repositories/UrlRepository';
+import { Url } from '../../../../domain/models/Url';
 
 @injectable()
 export class InMemoryUrlRepository implements UrlRepository {

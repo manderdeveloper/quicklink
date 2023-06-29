@@ -1,6 +1,6 @@
 import {  injectable } from 'inversify';
-import { User } from '../../../domain/models/User';
-import { UserRepository } from '../../../domain/repositories/UserRepository';
+import { User } from '../../../../domain/models/User';
+import { UserRepository } from '../../../../domain/repositories/UserRepository';
 import { AdminCreateUserCommand, AdminSetUserPasswordCommand, CognitoIdentityProviderClient, ListUsersCommand } from "@aws-sdk/client-cognito-identity-provider";
 
 

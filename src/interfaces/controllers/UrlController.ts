@@ -5,7 +5,7 @@ import { USECASETYPES } from "../../shared/types/UseCaseTypes";
 import { CreateUrlUseCase } from "../../application/useCases/url/CreateUrlUseCase";
 import { CreateUrlBody } from "../../application/useCases/url/body/CreateUrlBody";
 
-@controller('/urls')
+@controller('/api/urls')
 export class UrlController {
   constructor(
     @inject(USECASETYPES.CreateUrlUseCase) private createUrlUseCase: CreateUrlUseCase

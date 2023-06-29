@@ -7,9 +7,9 @@ import { CreateUserUseCase } from "../../application/useCases/users/CreateUserUs
 import { ListUserUseCase } from "../../application/useCases/users/ListUserUseCase";
 import { RetrieveUserUseCase } from "../../application/useCases/users/RetrieveUserUseCase";
 import { validationMiddleware } from "../middlewares/Validation";
-import { CreateUserValidator } from "../../application/validators/CreateUSerValidator";
+import { CreateUserValidator } from "../../application/validators/CreateUserValidator";
 
-@controller('/users')
+@controller('/api/users')
 export class UserController {
   constructor(
     @inject(USECASETYPES.CreateUserUseCase) private createUserUseCase: CreateUserUseCase,

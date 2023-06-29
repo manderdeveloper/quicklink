@@ -6,9 +6,7 @@ import { RetrieveUserUseCase } from "../application/useCases/users/RetrieveUserU
 import { UrlRepository } from "../domain/repositories/UrlRepository";
 import { UserRepository } from "../domain/repositories/UserRepository";
 import { ConsoleLogger } from "../infraestructure/logging/ConsoleLogger";
-import { CognitoUserRepository } from "../infraestructure/persistence/repositories/CognitoUserRepository";
-import { InMemoryUrlRepository } from "../infraestructure/persistence/repositories/InMemoryUrlRepository";
-import { InMemoryUserRepository } from "../infraestructure/persistence/repositories/InMemoryUserRepository";
+import { CognitoUserRepository } from "../infraestructure/persistence/repositories/User/CognitoUserRepository";
 import { ResolveUrlController } from "../interfaces/controllers/ResolveUrlController";
 import { UrlController } from "../interfaces/controllers/UrlController";
 import { UserController } from "../interfaces/controllers/UserController";
@@ -16,11 +14,12 @@ import { Logger } from "../interfaces/middlewares/Logger";
 import { CONTROLLERTYPES } from "../shared/types/ControllerTypes";
 import { USECASETYPES } from "../shared/types/UseCaseTypes";
 import { container } from "./containerBase";
+import { DynamoUrlRepository } from "../infraestructure/persistence/repositories/Url/DynamoUrlRepository";
 
 
 // Repositories
 container.bind<UserRepository>('UserRepository').to(CognitoUserRepository);
-container.bind<UrlRepository>('UrlRepository').toConstantValue(new InMemoryUrlRepository);
+container.bind<UrlRepository>('UrlRepository').to(DynamoUrlRepository);
 
 // Controllers
 container.bind<UserController>(CONTROLLERTYPES.UserController).to(UserController);

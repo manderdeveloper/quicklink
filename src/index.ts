@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
 import { errorHandlerMiddleware } from './interfaces/middlewares/ErrorHandler';
 
-const server = new InversifyExpressServer(container, null, {rootPath: '/api'});
+const server = new InversifyExpressServer(container, null, {rootPath: ''});
 
 server.setConfig((app) => {
   app.use(bodyParser.urlencoded({extended: true}));

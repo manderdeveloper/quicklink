@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { User } from '../../../domain/models/User';
-import { UserRepository } from '../../../domain/repositories/UserRepository';
+import { User } from '../../../../domain/models/User';
+import { UserRepository } from '../../../../domain/repositories/UserRepository';
 
 @injectable()
 export class InMemoryUserRepository implements UserRepository {
@@ -12,6 +12,11 @@ export class InMemoryUserRepository implements UserRepository {
 
   getById(id: string): Promise<User | null> {
     const user = this.users.find((user) => user.id.value === id);
+    return Promise.resolve(user || null);
+  }
+
+  getByEmail(email: string): Promise<User | null> {
+    const user = this.users.find((user) => user.email.value === email);
     return Promise.resolve(user || null);
   }
 
