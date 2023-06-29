@@ -41,7 +41,7 @@ export class CognitoUserRepository implements UserRepository {
   async getByEmail(email: string): Promise<User | null> {
     const params = {
       UserPoolId: this.userPool,
-      UserEmail: email
+      Filter: `email = "${email}"`,
     };
     const command = new ListUsersCommand(params);
     const response = await this.cognitoClient.send(command);
