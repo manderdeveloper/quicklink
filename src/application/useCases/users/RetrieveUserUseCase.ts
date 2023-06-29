@@ -9,11 +9,11 @@ class RetrieveUserUseCase {
     @inject('UrlRepository') private urlRepository: UrlRepository
     ) {}
 
-  public async execute(id:string): Promise<any> {
-    const user = await this.userRepository.getById(id);
+  public async execute(email:string): Promise<any> {
+    const user = await this.userRepository.getByEmail(email);
     const primitiveUser = user.toPrimitives();
     const urls = await this.urlRepository.getAll();
-    const userUrls = urls.filter(url => url.userId.value === user.id.value).map(url => url.toPrimitives());
+    const userUrls = urls.filter(url => url.userEmail.value === user.email.value).map(url => url.toPrimitives());
     primitiveUser['urls'] = userUrls;
     return primitiveUser;
   }

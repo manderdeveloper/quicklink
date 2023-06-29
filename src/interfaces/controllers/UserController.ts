@@ -6,6 +6,8 @@ import { USECASETYPES } from "../../shared/types/UseCaseTypes";
 import { CreateUserUseCase } from "../../application/useCases/users/CreateUserUseCase";
 import { ListUserUseCase } from "../../application/useCases/users/ListUserUseCase";
 import { RetrieveUserUseCase } from "../../application/useCases/users/RetrieveUserUseCase";
+import { validationMiddleware } from "../middlewares/Validation";
+import { CreateUserValidator } from "../../application/validators/CreateUSerValidator";
 
 @controller('/users')
 export class UserController {
@@ -15,7 +17,7 @@ export class UserController {
     @inject(USECASETYPES.RetrieveUserUseCase) private retrieveUserUseCase: RetrieveUserUseCase
   ) {}
 
-  @httpPost('/')
+  @httpPost('/', validationMiddleware(CreateUserValidator.validateCreateUser()))
   async create(req: Request, res: Response) {
     try {
 
@@ -35,19 +37,19 @@ export class UserController {
       return res.status(201).json(users);
 
     } catch (error) {
-      return res.status(500).json({ message: 'Error creating user' });
+      return res.status(500).json({ message: 'Error list user' });
     }
   }
 
-  @httpGet('/:id')
+  @httpGet('/:email')
   async retrieve(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const user = await this.retrieveUserUseCase.execute(id);
+      const { email } = req.params;
+      const user = await this.retrieveUserUseCase.execute(email);
       return res.status(201).json(user);
 
     } catch (error) {
-      return res.status(500).json({ message: 'Error creating user' });
+      return res.status(500).json({ message: 'Error retrieving user' });
     }
   }
   

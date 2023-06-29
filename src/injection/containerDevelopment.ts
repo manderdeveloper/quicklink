@@ -6,6 +6,7 @@ import { RetrieveUserUseCase } from "../application/useCases/users/RetrieveUserU
 import { UrlRepository } from "../domain/repositories/UrlRepository";
 import { UserRepository } from "../domain/repositories/UserRepository";
 import { ConsoleLogger } from "../infraestructure/logging/ConsoleLogger";
+import { CognitoUserRepository } from "../infraestructure/persistence/repositories/CognitoUserRepository";
 import { InMemoryUrlRepository } from "../infraestructure/persistence/repositories/InMemoryUrlRepository";
 import { InMemoryUserRepository } from "../infraestructure/persistence/repositories/InMemoryUserRepository";
 import { ResolveUrlController } from "../interfaces/controllers/ResolveUrlController";
@@ -18,7 +19,7 @@ import { container } from "./containerBase";
 
 
 // Repositories
-container.bind<UserRepository>('UserRepository').toConstantValue(new InMemoryUserRepository);
+container.bind<UserRepository>('UserRepository').to(CognitoUserRepository);
 container.bind<UrlRepository>('UrlRepository').toConstantValue(new InMemoryUrlRepository);
 
 // Controllers
