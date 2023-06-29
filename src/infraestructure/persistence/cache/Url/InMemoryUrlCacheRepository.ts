@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
-import { CacheRepository } from "../../../domain/cache/CacheRepository";
-import { Url } from "../../../domain/models/Url";
+import { CacheRepository } from "../../../../domain/cache/CacheRepository";
+import { Url } from "../../../../domain/models/Url";
 
 @injectable()
 export class InMeMoryCacheRepository implements CacheRepository<Url> {

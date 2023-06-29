@@ -7,7 +7,7 @@ import { CacheUrlRepository } from "../domain/cache/UrlCacheRepository";
 import { UrlRepository } from "../domain/repositories/UrlRepository";
 import { UserRepository } from "../domain/repositories/UserRepository";
 import { ConsoleLogger } from "../infraestructure/logging/ConsoleLogger";
-import { InMeMoryCacheRepository } from "../infraestructure/persistence/cache/InMemoryCacheRepository";
+import { InMeMoryCacheRepository } from "../infraestructure/persistence/cache/Url/InMemoryUrlCacheRepository";
 import { InMemoryUrlRepository } from "../infraestructure/persistence/repositories/Url/InMemoryUrlRepository";
 import { InMemoryUserRepository } from "../infraestructure/persistence/repositories/User/InMemoryUserRepository";
 import { ResolveUrlController } from "../interfaces/controllers/ResolveUrlController";
