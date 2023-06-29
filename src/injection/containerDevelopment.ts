@@ -15,11 +15,14 @@ import { CONTROLLERTYPES } from "../shared/types/ControllerTypes";
 import { USECASETYPES } from "../shared/types/UseCaseTypes";
 import { container } from "./containerBase";
 import { DynamoUrlRepository } from "../infraestructure/persistence/repositories/Url/DynamoUrlRepository";
+import { CacheUrlRepository } from "../domain/cache/UrlCacheRepository";
+import { RedisCacheRepository } from "../infraestructure/persistence/cache/RedisCacheRepository";
 
 
 // Repositories
 container.bind<UserRepository>('UserRepository').to(CognitoUserRepository);
 container.bind<UrlRepository>('UrlRepository').to(DynamoUrlRepository);
+container.bind<CacheUrlRepository>('CacheUrlRepository').to(RedisCacheRepository);
 
 // Controllers
 container.bind<UserController>(CONTROLLERTYPES.UserController).to(UserController);
