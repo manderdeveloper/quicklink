@@ -21,8 +21,6 @@ import { InMeMoryCacheRepository } from "../infraestructure/persistence/cache/Ur
 import { CognitoAuthService } from "../infraestructure/services/User/CognitoUserService";
 import { AuthService } from "../domain/services/AuthService";
 import { AuthController } from "../interfaces/controllers/AuthController";
-import { AuthMiddleware } from "../interfaces/middlewares/AuthMiddleware";
-import { MIDDLEWARETYPES } from "../shared/types/MiddlewareTypes";
 
 
 // Repositories
@@ -46,7 +44,6 @@ container.bind<CreateUrlUseCase>(USECASETYPES.CreateUrlUseCase).to(CreateUrlUseC
 
 //Middlewares
 container.bind<Logger>('Logger').to(ConsoleLogger);
-container.bind<AuthMiddleware>(MIDDLEWARETYPES.AuthMiddleware).to(AuthMiddleware);
 
 //Services
 container.bind<AuthService>('AuthService').to(CognitoAuthService)

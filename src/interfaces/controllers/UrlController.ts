@@ -1,9 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { controller, httpPost } from "inversify-express-utils";
 import { inject } from "inversify";
 import { USECASETYPES } from "../../shared/types/UseCaseTypes";
 import { CreateUrlUseCase } from "../../application/useCases/url/CreateUrlUseCase";
 import { CreateUrlBody } from "../../application/useCases/url/body/CreateUrlBody";
+import { validationAuthMiddleware } from "../middlewares/AuthMiddleware";
+import { UserRequest } from "../../shared/models/Request";
 
 @controller('/api/urls')
 export class UrlController {
@@ -11,16 +13,16 @@ export class UrlController {
     @inject(USECASETYPES.CreateUrlUseCase) private createUrlUseCase: CreateUrlUseCase
   ) {}
 
-  @httpPost('/')
-  async create(req: Request, res: Response) {
+  @httpPost('/', validationAuthMiddleware())
+  async create(req: UserRequest, res: Response, next: NextFunction) {
     try {
-
-      const body: CreateUrlBody = req.body;
+      const user = req.user;
+      const body: CreateUrlBody = { ...req.body, userEmail: user.email.value};
       await this.createUrlUseCase.execute(body);
       return res.status(201).json({message: 'Created'});
 
     } catch (error) {
-      return res.status(500).json({ message: 'Error creating user' });
+      next(error);
     }
   }
 }

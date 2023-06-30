@@ -1,6 +1,7 @@
 import { UrlId } from "../valueObjects/url/UrlId";
 import { UrlString } from "../valueObjects/url/UrlString";
-import { UrlUserEmail } from "../valueObjects/url/UrlUseremail";
+import { UrlUserEmail } from "../valueObjects/url/UrlUserEmail";
+
 
 export class Url {
   readonly id: UrlId;

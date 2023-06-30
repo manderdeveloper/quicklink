@@ -6,6 +6,7 @@ import container from './injection/container';
 import * as bodyParser from 'body-parser';
 import { Request, Response, NextFunction } from 'express';
 import { errorHandlerMiddleware } from './interfaces/middlewares/ErrorHandler';
+import serverless = require('serverless-http');
 
 const server = new InversifyExpressServer(container, null, {rootPath: ''});
 
@@ -21,8 +22,9 @@ server.setErrorConfig((app) => {
 });
 
 const app = server.build();
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
-});
+const handler = serverless(app);
 
-export {app}
+module.exports.handler = async (event, context) => {
+  const result = await handler(event, context);
+  return result;
+};

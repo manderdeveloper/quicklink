@@ -9,7 +9,7 @@ export class DynamoUrlRepository implements UrlRepository {
   private tableName: string = process.env.AWS_URL_TABLE;
   private indexName: string = 'shortenedUrl-index';
   constructor() {
-    this.client = new DynamoDBClient({ region: process.env.AWS_REGION });
+    this.client = new DynamoDBClient({ region: process.env.CLOUD_REGION });
   }
 
   async getById(id: string): Promise<Url | null> {

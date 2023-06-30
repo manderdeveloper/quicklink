@@ -4,6 +4,7 @@
         "lib": ["es6"],
         "types": ["reflect-metadata"],
         "module": "commonjs",
+        "outDir": "./dist",
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true

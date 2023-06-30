@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { controller, httpGet, httpPost, Middleware, next } from "inversify-express-utils";
 import { CreateUserBody } from "../../application/useCases/users/body/CreateUserBody";
 import { inject } from "inversify";
@@ -8,23 +8,20 @@ import { ListUserUseCase } from "../../application/useCases/users/ListUserUseCas
 import { RetrieveUserUseCase } from "../../application/useCases/users/RetrieveUserUseCase";
 import { validationMiddleware } from "../middlewares/Validation";
 import { CreateUserValidator } from "../../application/validators/CreateUserValidator";
-import { AuthMiddleware, validationAuthMiddleware } from "../middlewares/AuthMiddleware";
-import { MIDDLEWARETYPES } from "../../shared/types/MiddlewareTypes";
-import { AuthService } from "../../domain/services/AuthService";
+import {  validationAuthMiddleware } from "../middlewares/AuthMiddleware";
 import { UserRequest } from "../../shared/models/Request";
+import { validationAdminApiKey } from "../middlewares/AdminApiKeyMiddleware";
 
 @controller('/api/users')
 export class UserController {
   constructor(
     @inject(USECASETYPES.CreateUserUseCase) private createUserUseCase: CreateUserUseCase,
     @inject(USECASETYPES.ListUserUseCase) private listUserUseCase: ListUserUseCase,
-    @inject(USECASETYPES.RetrieveUserUseCase) private retrieveUserUseCase: RetrieveUserUseCase,
-    @inject(MIDDLEWARETYPES.AuthMiddleware) private authMiddleware: AuthMiddleware,
-    @inject('AuthService') private authService: AuthService
+    @inject(USECASETYPES.RetrieveUserUseCase) private retrieveUserUseCase: RetrieveUserUseCase
   ) {}
 
-  @httpPost('/', validationMiddleware(CreateUserValidator.validateCreateUser()))
-  async create(req: Request, res: Response) {
+  @httpPost('/', validationAdminApiKey(), validationMiddleware(CreateUserValidator.validateCreateUser()))
+  async create(req: Request, res: Response, next: NextFunction) {
     try {
 
       const body: CreateUserBody = req.body;
@@ -32,23 +29,23 @@ export class UserController {
       return res.status(201).json({message: 'Created'});
 
     } catch (error) {
-      throw error;
+      next(error);
     }
   }
 
-  @httpGet('/')
-  async list(req: Request, res: Response) {
+  @httpGet('/', validationAdminApiKey())
+  async list(req: Request, res: Response, next: NextFunction) {
     try {
       const users = await this.listUserUseCase.execute();
       return res.status(201).json(users);
 
     } catch (error) {
-      return res.status(500).json({ message: 'Error list user' });
+      next(error);
     }
   }
 
   @httpGet('/:email', validationAuthMiddleware())
-  async retrieve(req: UserRequest, res: Response) {
+  async retrieve(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const { email } = req.params;
       if (email !== req.user.email.value) throw new Error('FORBIDDEN');
@@ -56,7 +53,7 @@ export class UserController {
       return res.status(201).json(userUseCase);
 
     } catch (error) {
-      return res.status(500).json({ message: 'Error retrieving user' });
+      next(error);
     }
   }
   

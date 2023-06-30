@@ -1,43 +1,20 @@
-// Middleware/AuthMiddleware.ts
-
-import { Request, Response, NextFunction } from 'express';
-import { injectable, inject } from 'inversify';
+import { Response, NextFunction } from 'express';
 import { AuthService } from '../../domain/services/AuthService';
 import { container } from '../../injection/containerBase';
 import { UserRequest } from '../../shared/models/Request';
-
-@injectable()
-export class AuthMiddleware {
-  constructor(
-    @inject('AuthService') private authService: AuthService,
-  ) {}
-
-  public validateToken() {
-    return async (req: Request, res: Response, next: NextFunction) => {
-      const token = req.headers.authorization?.split(' ')[1];
-      if (!token) return res.status(401).json({ error: 'No se proporcionó un token de acceso' });
-      try {
-        const user = await this.authService.validateAuthToken(token);
-        //req.user = decodedToken;
-        next();
-      } catch (error) {
-        return res.status(401).json({ error: 'Token inválido o expirado' });
-      }
-    };
-  }
-}
+import { BadRequestError } from '../../shared/errors/BadRequest';
 
 function validationAuthMiddleware() {
   return async function (req: UserRequest, res: Response, next: NextFunction) {
     const authService = container.get<AuthService>('AuthService');
     const token = req.headers.authorization?.split(' ')[1];
-      if (!token) return res.status(401).json({ error: 'No se proporcionó un token de acceso' });
+      if (!token) return new BadRequestError('Access Token is required');
       try {
         const user = await authService.validateAuthToken(token);
         req.user = user;
         next();
       } catch (error) {
-        return res.status(401).json({ error: 'Token inválido o expirado' });
+        return new BadRequestError('Access Token is not valid');
       }
   };
 }
