@@ -14,7 +14,7 @@ function validationAuthMiddleware() {
         req.user = user;
         next();
       } catch (error) {
-        return new BadRequestError('Access Token is not valid');
+        next(new BadRequestError('Access Token is not valid'));
       }
   };
 }
